@@ -1,0 +1,51 @@
+﻿{% extends "./index.html" %}
+
+
+{% block log_in %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>
+        Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.
+    </p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" class="container-inner">
+    {% csrf_token %}
+
+
+    {{ form.username.label_tag }}
+    {{ form.username }}
+
+
+    {{ form.password.label_tag }}
+    {{ form.password }}
+
+
+    <input type="submit" value="Login">
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{% block registration_button %}
+
+<form action="{% url 'registrate' %}">
+    {% csrf_token %}
+
+    <input type="submit" value="Registration">
+</form>
+
+{% endblock registration_button %}
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+{% endblock log_in %}
+

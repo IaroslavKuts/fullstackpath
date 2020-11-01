@@ -1,0 +1,31 @@
+﻿{% extends "./registration.html" %}
+
+{% block registration %}
+
+<form method="post" class="container-inner" action="{% url 'registrate' %}">
+    {% csrf_token %}
+    
+    
+    {{ registration.username.errors }}
+    {{ registration.username.label_tag }}
+    {{ registration.username }}
+    
+
+    {{ registration.email.errors }}
+    {{ registration.email.label_tag }}
+    {{ registration.email }}
+    
+ 
+    {{ registration.password1.errors }}
+    {{ registration.password1.label_tag }}
+    {{ registration.password1 }}
+
+
+    {{ registration.password2.errors }}
+    {{ registration.password2.label_tag }}
+    {{ registration.password2 }}
+
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock registration %}

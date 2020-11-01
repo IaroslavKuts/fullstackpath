@@ -1,0 +1,74 @@
+﻿{% extends "./userpage.html" %}
+{% load familytree_extras %}
+
+
+{% block logout %}
+
+    <form method="POST"> 
+        {% csrf_token %}
+        <input type="submit" name="action" value="LOG OUT" />
+    </form>
+
+{% endblock logout %}
+
+{% block delete_user %}
+
+    <form method="POST">
+        {% csrf_token %}
+    <input type="submit" name="action" value="Erase account" />
+    </form>
+{% endblock delete_user %}
+
+
+{% block user_relatives %} 
+    {% for kinship, relatives_qs in relatives %}
+    {% if relatives_qs %}
+    
+        
+        <fieldset>
+        <legend>{{ kinship }}</legend>
+            <div class="relatives_container_table">
+            {% for person in relatives_qs %}
+                <div class="relatives_container_row">
+                <form method="POST" class="kinship_container">
+                        {% csrf_token %}
+                        {% for radio_element in person_update.radio_dots %}
+                        {% with num=forloop.counter  %}
+                        <label>{{ person|list_index:num }}{{ radio_element.tag }}</label>
+                        {% endwith %}
+
+                        {% endfor %}
+                
+                {{ person_update.user_input }}
+                <input type="hidden" name="update" value="{{ kinship }}__{{ person.0 }}" />
+                <input type="submit" name="action" value="Update" />
+                </form>
+                <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="delete" value="{{ kinship }}__{{ person.0 }}" />
+                <input type="submit" name="action" value="Delete" />
+                </form>
+                </div>
+            {% endfor %}
+            </div>
+        </fieldset> 
+    {% endif %}
+    
+    
+    {% endfor %}
+       
+{% endblock user_relatives %}
+
+
+{% block add_person %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in person_create  %}
+        {{ field.label_tag }}
+        {{ field }}
+        {% endfor %}
+        <input type="submit" name="action" value="Add person" />
+    </form>
+
+{% endblock add_person %}

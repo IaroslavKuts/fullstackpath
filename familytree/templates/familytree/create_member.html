@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'familytree/css/create_member.css' %}" />
+    <title>FillForm</title>
+</head>
+<body>
+    <form class="container-registration" method="POST">
+        {% csrf_token %}
+        <div class="form-container">
+            {{ treeform }}
+        </div>
+        <input type="submit" value="Confirm" />
+
+    </form>
+</body>
+</html>
