@@ -5,7 +5,7 @@ import posixpath
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = 'f937d39e-021b-42a3-be01-1bf0058fdc6c'
+SECRET_KEY = ''
 
 DEBUG = True
 
