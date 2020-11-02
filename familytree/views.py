@@ -58,6 +58,7 @@ class User_Page(TemplateView):
         if received_button_name == 'Add person':
             if context['person_create'].is_valid():
                 context['person_create'].save(request.user.username)
+                context['person_create'] = forms.Person_Creation
                
         
         if 'Update' in request.POST['action'] or 'Delete' in request.POST['action']:

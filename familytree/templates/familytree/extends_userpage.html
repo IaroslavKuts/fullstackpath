@@ -30,7 +30,7 @@
             <div class="relatives_container_table">
             {% for person in relatives_qs %}
                 <div class="relatives_container_row">
-                <form method="POST" class="kinship_container">
+                <form method="POST" class="person_fields">
                         {% csrf_token %}
                         {% for radio_element in person_update.radio_dots %}
                         {% with num=forloop.counter  %}

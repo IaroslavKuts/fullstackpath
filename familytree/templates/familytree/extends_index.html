@@ -21,7 +21,7 @@
 <form method="post" class="container-inner">
     {% csrf_token %}
 
-
+    
     {{ form.username.label_tag }}
     {{ form.username }}
 
@@ -29,7 +29,7 @@
     {{ form.password.label_tag }}
     {{ form.password }}
 
-
+    
     <input type="submit" value="Login">
     <input type="hidden" name="next" value="{{ next }}">
 </form>
