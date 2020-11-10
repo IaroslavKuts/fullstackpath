@@ -28,7 +28,6 @@
 
 ipch/
 obj/
-static/
 [Bb]in
 [Dd]ebug*/
 [Rr]elease*/

@@ -1,0 +1,142 @@
+﻿body {
+
+}
+
+.grid-container {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 200px 7px 1fr;
+    grid-template-rows: 70px 7px 1fr 7px 70px;
+    grid-template-areas: "header header header"
+                         ". . ."
+                         "interaction . output"
+                         ". . ."
+                         "footer footer footer"
+}
+
+/* "header header header"-area START */
+
+.header{
+    grid-area: header;
+    background-color: darkslategrey;
+}
+.header input{
+    color: red;
+    text-align:center;
+    text-transform: uppercase;
+}
+
+/* "header header header"-area END */
+
+/* "interaction"-area START */
+
+#interaction {
+    grid-area: interaction;
+    background-color: darkgrey;
+    display: flex;
+    flex-direction: column;
+}
+
+#interaction > input {
+    margin-bottom: 10px;
+}
+
+#interaction p {
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+    /* belongs to "interaction"-area.  Accordion START */
+
+    #interaction .tab > input, .tab-content{
+        display: none;
+    }
+
+    #interaction :checked ~ .tab-content {
+        display: block;
+    }
+
+    #interaction .tab-title::after {
+        content: '+';
+    }
+
+    #interaction :checked + .tab-title::after {
+        content: '−';
+    }
+
+    #interaction .tab-title {
+        cursor: pointer;
+    }
+
+    /* belongs to "interaction"-area.  Accordion END */
+
+/* "Section"-area END */
+
+/* "output"-area START */
+
+.output {
+    grid-area: output;
+    background-color: lightslategrey;
+
+}
+
+    /* belongs to "output"-area.  Relatives table START */
+
+    .relatives_container_main {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .kinship_container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .relatives_container_row {
+        display: flex;
+    }
+
+    .relatives_container_table {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        border: solid;        
+    }
+
+
+    .relatives_container_row > label{
+        margin-left: 20px;
+    }
+
+    .relatives_container_row:last-child {
+        margin-right: 20px;
+    }
+
+
+    .relatives_container_row > input {
+        display: none;
+    }
+
+    div > fieldset {
+        margin-top: 40px;
+    }
+    /* belongs to "output"-area.  Relatives table END */
+
+/* "output"-area END */
+
+/* "footer"-area START */
+
+.footer {
+    grid-area: footer;
+    background-color: grey;
+}
+
+.footer p {
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* "footer"-area END */
