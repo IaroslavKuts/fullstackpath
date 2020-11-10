@@ -10,6 +10,7 @@ from . import services
 class Index_Page(LoginView):
     template_name = 'familytree/extends_index.html'
     extra_context = {'next': 'UserPage'}
+
 #   -------------  /index  ------------- END
 
 #   -------------  /index/registration ------------- START
@@ -61,7 +62,7 @@ class User_Page(TemplateView):
                 context['person_create'] = forms.Person_Creation
                
         
-        if 'Update' in request.POST['action'] or 'Delete' in request.POST['action']:
+        if request.POST['action'][-1] == 'e':
             dict_key = received_button_name.lower()
             hidden_input = request.POST[dict_key].split('__')
             if context['person_update'].is_valid():

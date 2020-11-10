@@ -49,3 +49,8 @@ _ReSharper*/
 ~$*
 
 *.txt
+# Ignore dynaconf secret files
+.secrets.*
+
+#Yaml
+*.yaml
