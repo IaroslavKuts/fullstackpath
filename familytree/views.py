@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.contrib import auth
 from django.contrib.auth.views import LoginView
-from . import forms
-from . import models
+
+from .forms import User_Registration, Person_Creation, Person_Update
+from .models import Parents
+from .helper_functions import BaseView
 from . import services
+
 
 #   -------------  /index  ------------- START
 class Index_Page(LoginView):
     template_name = 'familytree/extends_index.html'
     extra_context = {'next': 'UserPage'}
-
 #   -------------  /index  ------------- END
 
 #   -------------  /index/registration ------------- START
@@ -19,7 +21,7 @@ class Registration_Page(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['registration'] = forms.User_Registration(data = self.request.POST)
+        context['registration'] = User_Registration(data = self.request.POST)
         return context
     
     def post(self, request, *args, **kwargs):
@@ -33,14 +35,14 @@ class Registration_Page(TemplateView):
 #   -------------  /index/registration  ------------- END
 
 #   -------------  /index/UserPage  ------------- START
-class User_Page(TemplateView):
+class User_Page(BaseView):
     template_name = "familytree/extends_userpage.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['person_create'] = forms.Person_Creation(data = self.request.POST)
-        context['person_update'] = forms.Person_Update(data = self.request.POST, auto_id = False)
-        context['relatives'] = models.Parents.objects.receive_person_relatives2(self.request.user.username)
+        context['person_create'] = Person_Creation(data = self.request.POST)
+        context['person_update'] = Person_Update(data = self.request.POST, auto_id = False)
+        context['relatives'] = Parents.objects.receive_person_relatives2(self.request.user.username)
         return context
     
     #Does "POST" look "clean" in terms of coding?
@@ -59,7 +61,7 @@ class User_Page(TemplateView):
         if received_button_name == 'Add person':
             if context['person_create'].is_valid():
                 context['person_create'].save(request.user.username)
-                context['person_create'] = forms.Person_Creation
+                context['person_create'] = Person_Creation
                
         
         if request.POST['action'][-1] == 'e':
@@ -67,10 +69,9 @@ class User_Page(TemplateView):
             hidden_input = request.POST[dict_key].split('__')
             if context['person_update'].is_valid():
                 context['person_update'].update(hidden_input)
-                context['person_update'] = forms.Person_Update
+                context['person_update'] = Person_Update
             else:
                 services.delete_person(hidden_input)
-
         return render(request, self.template_name,
                                 {'person_create': context['person_create'], 'relatives':context['relatives'],
                                  'person_update': context['person_update']} )

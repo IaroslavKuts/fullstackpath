@@ -49,6 +49,3 @@ _ReSharper*/
 
 # Ignore dynaconf secret files
 .secrets.*
-
-#Yaml
-*.yaml

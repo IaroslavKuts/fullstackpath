@@ -1,21 +1,17 @@
 from django.forms import ModelForm, Form
 from django import forms
-from . import models
+from django.conf import settings
+from .models import Person, Parents, Siblings, Grand_Parents, Spouse
 from django.contrib.auth.forms import User
 from django.core.exceptions import ValidationError
-from collections import namedtuple
 
 
-kinship_dict = {'Parents': models.Parents.objects,
-                'Grand_parents': models.Grand_Parents.objects,
-                'Siblings': models.Siblings.objects,
-                'Spouse': models.Spouse.objects}
+kinship_dict = {'Parents': Parents,
+                'Grand_parents': Grand_Parents,
+                'Siblings': Siblings,
+                'Spouse': Spouse}
 
-field_template = namedtuple('person_fields','fields')
-field_named_tuple = field_template(fields=('person_name', 'person_surname','person_age',
-                       'person_sex', 'person_family_status', 'person_country', 'belongs_to_user'))
-
-
+    
 class User_Registration(Form):
     #form internet
     username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
@@ -58,19 +54,15 @@ class User_Registration(Form):
  
 
 class Person_Creation(ModelForm):
-
-    KINSHIP_CHOICES = (
-        ('Parents', 'parent'),
-        ('Siblings', 'sibling'),
-        ('Grand_parents', 'grand parent')
-        )
-    
-
-    kinship = forms.ChoiceField(choices = KINSHIP_CHOICES, widget = forms.RadioSelect)
+    kinship = forms.ChoiceField(choices = settings.KINSHIP_CHOICES, widget = forms.RadioSelect)
     class Meta:
-        model = models.Person
+        model = Person
         exclude = ['belongs_to_user']
+        widgets = {
+            'person_birthdate': forms.DateInput(attrs={'type': 'date'})
+        }
 
+    
     def clean_kinship(self):
         POSTed = self.cleaned_data['kinship']
         return kinship_dict[POSTed].create
@@ -78,41 +70,19 @@ class Person_Creation(ModelForm):
     def save(self, username):
         save_person = self.cleaned_data['kinship']
         obtained_person_fields = {}
-        for index in range(len(field_named_tuple.fields)-1):
-            obtained_person_fields[field_named_tuple.fields[index]] = self.cleaned_data[field_named_tuple.fields[index]]
-        obtained_person_fields['belongs_to_user'] = User.objects.get(username = username)
-        
-            ###########################################################
-        #old
-        #obtained_person_fields = {
-        #                           'person_surname': self.cleaned_data['person_surname'],
-        #                           'person_name': self.cleaned_data['person_name'],
-        #                           'person_age': self.cleaned_data['person_age'],
-        #                           'person_sex': self.cleaned_data['person_sex'],
-        #                           'person_family_status': self.cleaned_data['person_family_status'],
-        #                           'person_country': self.cleaned_data['person_country'],
-        #                           'belongs_to_user': User.objects.get(username = aux_info['current_user'])}
-        ############################################################
+        for index in range(len(settings.PERSON_FIELDS)-1):
+            obtained_person_fields[settings.PERSON_FIELDS[index]] = self.cleaned_data[settings.PERSON_FIELDS[index]]
+        obtained_person_fields['belongs_to_user'] = User.objects.get(username = username)   
         save_person(**obtained_person_fields)
 
 
 class Person_Update(Form):
-    FIELD_CHOICES = (
-    ('0', ''),
-    ('1', ''),
-    ('2', ''),
-    ('3', ''),
-    ('4', ''),
-    ('5', '')
-    )
-
-
-    radio_dots = forms.ChoiceField(choices = FIELD_CHOICES, widget = forms.RadioSelect)
+    radio_dots = forms.ChoiceField(choices = settings.DOT_CHOICES, widget = forms.RadioSelect)
     user_input = forms.CharField(max_length=150)
 
 
     def clean_radio_dots(self):
-        chosen_field = field_named_tuple.fields[int(self.cleaned_data['radio_dots'])]
+        chosen_field = settings.PERSON_FIELDS[int(self.cleaned_data['radio_dots'])]
         return chosen_field
 
     def clean_user_input(self):
@@ -125,5 +95,5 @@ class Person_Update(Form):
         user_input = self.cleaned_data['user_input']
         chosen_kinship = secondary_data[0]
         field_input = {chosen_field : user_input}
-        kinship_dict[chosen_kinship].filter(id = person_id).update(**field_input)
+        kinship_dict[chosen_kinship].objects.filter(id = person_id).update(**field_input)
         

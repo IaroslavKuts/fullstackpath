@@ -1,0 +1,36 @@
+development:  
+  SENTRY_SDK:
+    dsn: https://4ec72831b1074deda484404a75124534@o487014.ingest.sentry.io/5545205
+    traces_sample_rate: 1.0
+    send_default_pii: True
+  KINSHIP_TEMPLATE: models.{}.objects
+  KINSHIP_TEMPLATE2:
+  KINSHIP_CHOICES:
+    -  [Parents, parent]
+    -  [Siblings, sibling]
+    -  [Grand_parents, grand parent]
+  PERSON_FIELDS:
+    -  person_name
+    -  person_surname
+    -  person_birthdate
+    -  person_sex
+    -  person_family_status
+    -  person_country
+    -  belongs_to_user
+  SEX_CHOICES:
+    -  [male,male]
+    -  [female, female]
+  REL_CHOICES:
+    -  [none, No information]
+    -  [single, single]
+    -  [engaged, engaged]
+    -  [married, married]
+    -  [divorced, divorced]
+    -  [widowed, widowed]
+  DOT_CHOICES:
+    -  [0, '']
+    -  [1, '']
+    -  [2, '']
+    -  [3, '']
+    -  [4, '']
+    -  [5, '']

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Display_Manager(models.Manager):
@@ -30,31 +31,13 @@ class Display_Manager(models.Manager):
 
 
 class Person(models.Model):
-        
-
-    SEX_CHOICES = (
-        ('male',"male"),
-        ('female', "female"),   
-    )
-
-    REL_CHOICES = (
-        ('none', "No information"),
-        ('single', 'single'),
-        ('engaged', "engaged"),
-        ('married', "married"),
-        ('divorced', "divorced"),
-        ('widowed', "widowed")
-
-    )
-
-
-    
-
+       
+  
     person_name = models.CharField(max_length=128)
     person_surname = models.CharField(max_length=128)
-    person_age = models.IntegerField()
-    person_sex = models.CharField(max_length=10, choices = SEX_CHOICES)
-    person_family_status = models.CharField(max_length=10, choices = REL_CHOICES)
+    person_birthdate = models.DateField(max_length=16, default = None)
+    person_sex = models.CharField(max_length=12, choices = settings.SEX_CHOICES)
+    person_family_status = models.CharField(max_length=10, choices = settings.REL_CHOICES)
     person_country = models.CharField(max_length=128)
     belongs_to_user = models.ForeignKey(User, on_delete =  models.CASCADE , to_field ='username')
     

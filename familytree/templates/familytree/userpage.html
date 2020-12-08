@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 {% load static %}
 <html>
 <head>
@@ -8,13 +8,13 @@
 </head>
 <body>
     <div class="grid-container">
-        <div class="header">
+        <header class="header">
             {% block logout %}
             {% endblock logout %}
             {% block delete_user %}
             {% endblock delete_user %}
-        </div>
-        <div id="interaction">
+        </header>
+        <section id="interaction">
             <p>Interaction</p>
             <div class="tab">
                 <input type="checkbox" id="tab1" name="tab-group">
@@ -36,16 +36,16 @@
                 <label for="tab3" class="tab-title">Delete person</label> 
                 <section class="tab-content">Содержимое 3</section> 
             </div>
-        </div>
-        <div class="output">
+        </section>
+        <main class="output">
             <div class="relatives_container_main">
             {% block user_relatives %}
             {% endblock user_relatives %}
             </div>
-        </div>
-        <div class="footer">
+        </main>
+        <footer class="footer">
             <p>Copyright, partners and similar footer shit</p>
-        </div>
+        </footer>
     </div>
 </body>
 </html>
